@@ -18,7 +18,7 @@ const Profile = () => {
           return;
         }
 
-        const response = await fetch('http://127.0.0.1:8000/profile/', {
+       const response = await fetch(`${API_URL}/profile`, {
           headers: {
             Authorization: `Token ${token}`,
             'Content-Type': 'application/json',
