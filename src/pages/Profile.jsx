@@ -18,7 +18,7 @@ const Profile = () => {
           return;
         }
 
-       const response = await fetch(`${API_URL}/profile`, {
+       const response = await fetch(`${API_URL}/profile/`, {
           headers: {
             Authorization: `Token ${token}`,
             'Content-Type': 'application/json',
