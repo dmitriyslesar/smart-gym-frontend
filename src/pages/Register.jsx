@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from './Header';
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 const Register = () => {
   const [errors, setErrors] = useState('');
   const navigate = useNavigate();

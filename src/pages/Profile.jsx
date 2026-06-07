@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
