@@ -23,21 +23,13 @@ const Cart = ({
 
   // ИСПРАВЛЕНО: Функция теперь отправляет данные на сервер
 // Добавляем слово async вот сюда:
-const order = async () => { 
-  const token = localStorage.getItem('token');
-  if (!token) {
-    setShowAlert(true);
-    return;
-  }
-  
-  // Теперь await внутри функции будет работать абсолютно законно!
-  const response = await fetch(`${API_URL}/orders/`, { 
-    method: 'POST',
-    // ... твой код запроса
-  });
+const order = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setShowAlert(true);
+      return;
+    }
 
-  navigate('/thank-you');
-};
     try {
       const response = await fetch(`${API_URL}/orders/create/`, {
         method: 'POST',
@@ -47,6 +39,16 @@ const order = async () => {
         },
         body: JSON.stringify({ cart: cart }),
       });
+
+      if (response.ok) {
+        navigate('/thank-you');
+      } else {
+        console.error('Ошибка при создании заказа');
+      }
+    } catch (error) {
+      console.error('Ошибка сети:', error);
+    }
+  }; 
 
       if (response.ok) {
         navigate('/thank-you');
