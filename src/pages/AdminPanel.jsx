@@ -9,24 +9,8 @@ const AdminPanel = () => {
   const token = localStorage.getItem('token');
 
  useEffect(() => {
-    // Переносим объявление функции прямо внутрь хука
-    const loadOrders = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/orders/`, {
-          headers: {
-            'Authorization': `Token ${token}`
-          }
-        });
-        const data = await response.json();
-        setOrders(data);
-      } catch (error) {
-        console.error('Не удалось получить заказы:', error);
-      }
-    };
-
-    // И тут же её вызываем
     loadOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadOrders = async () => {
