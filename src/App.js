@@ -11,8 +11,8 @@ import Profile from './pages/Profile';
 import Contacts from './pages/Contacts';
 import Delivery from './pages/Delivery';
 import Warranty from './pages/Warranty';
-import PaymentTerms from './pages/PaymentTerms';
 import ThankYou from './pages/ThankYou';
+import PrivacyPolicy from './pages/PaymentTerms';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -50,7 +50,7 @@ function App() {
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/delivery" element={<Delivery />} />
         <Route path="/warranty" element={<Warranty />} />
-        <Route path="/payment-terms" element={<PaymentTerms />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/thank-you" element={<ThankYou clearCart={clearCart} />} />
       </Routes>
     </BrowserRouter>

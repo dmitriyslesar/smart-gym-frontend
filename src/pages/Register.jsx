@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Header from './Header';
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 const Register = () => {
+  const [accepted, setAccepted] = useState(false);
   const [errors, setErrors] = useState('');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -33,6 +34,12 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!accepted) {
+    setErrors(
+      "Необходимо принять соглашение на обработку персональных данных."
+    );
+    return;
+  }
     setErrors('');
 
     try {
@@ -101,6 +108,13 @@ const Register = () => {
           </form>
 
           <div className="mt-6 flex flex-wrap gap-4 text-white/70">
+           <input
+    type="checkbox"
+    checked={accepted}
+    onChange={(e) => setAccepted(e.target.checked)}
+    className="mt-1 h-5 w-5 accent-emerald-400"
+    />
+           <Link to="/privacy-policy" className="text-emerald-400 hover:text-emerald-300">Cоглашение на обработку персональных данных</Link>
             <Link to="/login" className="transition hover:text-emerald-400">Уже есть аккаунт</Link>
             <Link to="/" className="transition hover:text-emerald-400">На главную</Link>
           </div>
