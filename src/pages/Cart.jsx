@@ -168,6 +168,5 @@ const order = async () => {
       <Footer />
     </div>
   );
-};
 
 export default Cart;

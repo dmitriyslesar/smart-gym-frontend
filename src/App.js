@@ -14,6 +14,7 @@ import Warranty from './pages/Warranty';
 import ThankYou from './pages/ThankYou';
 import PrivacyPolicy from './pages/PaymentTerms';
 import Cookies from './components/Cookies';
+import AdminPanel from './pages/AdminPanel';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -74,6 +75,7 @@ const decreaseQuantity = useCallback((productId) => {
         <Route path="/warranty" element={<Warranty />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/thank-you" element={<ThankYou clearCart={clearCart} />} />
+        <Route path='/orders' element={<AdminPanel />} />
       </Routes>
       <Cookies />
     </BrowserRouter>
