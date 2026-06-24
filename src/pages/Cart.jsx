@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
-
-// Если переменная API_URL импортируется из другого файла (например, из config.js),
-// оставь свой импорт. Если она объявлялась прямо тут, раскомментируй строку ниже:
-// const API_URL = 'https://smart-gym-backend-bvbj.onrender.com';
-
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 const Cart = ({
   cart,
   removeFromCart,
