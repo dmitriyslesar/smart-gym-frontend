@@ -92,7 +92,7 @@ const order = async () => {
       console.error('Ошибка при отправке заказа:', error);
       alert('Ошибка сети. Проверьте соединение с сервером.');
     }
-  };
+ ;
 
   return (
     <div className="min-h-screen bg-zinc-950">
