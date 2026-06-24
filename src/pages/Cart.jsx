@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 
-// Добавляем URL бэкенда (так же, как у тебя сделано в AdminPanel)
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+// Если переменная API_URL импортируется из другого файла (например, из config.js),
+// оставь свой импорт. Если она объявлялась прямо тут, раскомментируй строку ниже:
+// const API_URL = 'https://smart-gym-backend-bvbj.onrender.com';
 
 const Cart = ({
   cart,
@@ -15,15 +16,8 @@ const Cart = ({
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
 
-  // ИСПРАВЛЕНО: Теперь учитывается количество товара (quantity) при подсчете суммы
-  const total = cart.reduce((sum, item) => {
-    const cleanPrice = Number(item.price.toString().replaceAll(' ', ''));
-    return sum + (cleanPrice * item.quantity);
-  }, 0);
-
-  // ИСПРАВЛЕНО: Функция теперь отправляет данные на сервер
-// Добавляем слово async вот сюда:
-const order = async () => {
+  // Исправленная и чистая функция оформления заказа
+  const order = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
       setShowAlert(true);
@@ -48,53 +42,9 @@ const order = async () => {
     } catch (error) {
       console.error('Ошибка сети:', error);
     }
-  }; 
-
-      if (response.ok) {
-        navigate('/thank-you');
-      } else {
-        const errorData = await response.json();
-        alert(errorData.detail || 'Не удалось оформить заказ');
-      }
-    } catch (error) {
-      console.error('Ошибка при отправке заказа:', error);
-      alert('Ошибка соединения с сервером');
-    }
   };
 
-    // Формируем структуру данных, которую ожидает наш бэкенд
-    const orderData = {
-      total_price: total,
-      items: cart.map(item => ({
-        product_name: item.name,
-        quantity: item.quantity,
-        price: Number(item.price.toString().replaceAll(' ', ''))
-      }))
-    };
-
-    try {
-      const response = await fetch(`${API_URL}/orders/create/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Token ${token}`, // Передаем токен для авторизации
-        },
-        body: JSON.stringify(orderData)
-      });
-
-      if (response.ok) {
-        // Если сервер успешно сохранил заказ, перенаправляем на страницу "Спасибо"
-        navigate('/thank-you');
-      } else {
-        const errorData = await response.json();
-        alert('Не удалось оформить заказ. Ошибка сервера.');
-        print(errorData);
-      }
-    } catch (error) {
-      console.error('Ошибка при отправке заказа:', error);
-      alert('Ошибка сети. Проверьте соединение с сервером.');
-    }
- ;
+  const total = cart.reduce((sum, item) => sum + Number(item.price.replaceAll(' ', '')), 0);
 
   return (
     <div className="min-h-screen bg-zinc-950">
@@ -179,5 +129,6 @@ const order = async () => {
       <Footer />
     </div>
   );
+};
 
 export default Cart;
