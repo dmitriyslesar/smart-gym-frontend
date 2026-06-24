@@ -8,7 +8,24 @@ const AdminPanel = () => {
   const [orders, setOrders] = useState([]);
   const token = localStorage.getItem('token');
 
-  useEffect(() => {
+ useEffect(() => {
+    // Переносим объявление функции прямо внутрь хука
+    const loadOrders = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/orders/`, {
+          headers: {
+            'Authorization': `Token ${token}`
+          }
+        });
+        const data = await response.json();
+        setOrders(data);
+      } catch (error) {
+        console.error('Не удалось получить заказы:', error);
+      }
+    };
+
+    // И тут же её вызываем
     loadOrders();
   }, []);
 
