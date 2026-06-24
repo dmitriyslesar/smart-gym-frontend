@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 
+// Добавляем URL бэкенда (так же, как у тебя сделано в AdminPanel)
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
 const Cart = ({
   cart,
   removeFromCart,
@@ -12,16 +15,53 @@ const Cart = ({
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
 
-  const order = () => {
+  // ИСПРАВЛЕНО: Теперь учитывается количество товара (quantity) при подсчете суммы
+  const total = cart.reduce((sum, item) => {
+    const cleanPrice = Number(item.price.toString().replaceAll(' ', ''));
+    return sum + (cleanPrice * item.quantity);
+  }, 0);
+
+  // ИСПРАВЛЕНО: Функция теперь отправляет данные на сервер
+  const order = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
       setShowAlert(true);
       return;
     }
-    navigate('/thank-you');
-  };
 
-  const total = cart.reduce((sum, item) => sum + Number(item.price.replaceAll(' ', '')), 0);
+    // Формируем структуру данных, которую ожидает наш бэкенд
+    const orderData = {
+      total_price: total,
+      items: cart.map(item => ({
+        product_name: item.name,
+        quantity: item.quantity,
+        price: Number(item.price.toString().replaceAll(' ', ''))
+      }))
+    };
+
+    try {
+      const response = await fetch(`${API_URL}/orders/create/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`, // Передаем токен для авторизации
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      if (response.ok) {
+        // Если сервер успешно сохранил заказ, перенаправляем на страницу "Спасибо"
+        navigate('/thank-you');
+      } else {
+        const errorData = await response.json();
+        alert('Не удалось оформить заказ. Ошибка сервера.');
+        print(errorData);
+      }
+    } catch (error) {
+      console.error('Ошибка при отправке заказа:', error);
+      alert('Ошибка сети. Проверьте соединение с сервером.');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-zinc-950">
