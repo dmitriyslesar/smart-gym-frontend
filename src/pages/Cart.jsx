@@ -3,7 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 
-const Cart = ({ cart, removeFromCart }) => {
+const Cart = ({
+  cart,
+  removeFromCart,
+  increaseQuantity,
+  decreaseQuantity,
+}) => {
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false);
 
@@ -47,6 +52,25 @@ const Cart = ({ cart, removeFromCart }) => {
                 <div>
                   <h2 className="text-2xl font-bold text-white">{item.name}</h2>
                   <p className="mt-2 text-white/60">{item.price} ₽</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => decreaseQuantity(item.id)}
+                    className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/10 bg-zinc-900 text-xl text-white transition hover:border-emerald-400"
+                  >
+                    −
+                  </button>
+
+                  <span className="w-8 text-center text-lg font-bold text-white">
+                    {item.quantity}
+                  </span>
+
+                  <button
+                    onClick={() => increaseQuantity(item.id)}
+                    className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-400 text-xl font-bold text-black transition hover:scale-105"
+                  >
+                    +
+                  </button>
                 </div>
                 <p className="text-lg font-semibold text-white">x{item.quantity}</p>
                 <button onClick={() => removeFromCart(item.id)} className="rounded-2xl border border-red-500/40 px-4 py-2 text-red-300 transition hover:bg-red-500/10">

@@ -34,6 +34,27 @@ function App() {
   }, []);
 
   const clearCart = useCallback(() => setCart([]), []);
+  const increaseQuantity = useCallback((productId) => {
+  setCart((prev) =>
+    prev.map((item) =>
+      item.id === productId
+        ? { ...item, quantity: item.quantity + 1 }
+        : item
+    )
+  );
+}, []);
+
+const decreaseQuantity = useCallback((productId) => {
+  setCart((prev) =>
+    prev
+      .map((item) =>
+        item.id === productId
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+      .filter((item) => item.quantity > 0)
+  );
+}, []);
 
   return (
     <BrowserRouter>
@@ -43,7 +64,7 @@ function App() {
         <Route path="/catalog/cardio" element={<Catalog category="cardio" />} />
         <Route path="/catalog/ramy" element={<Catalog category="frames" />} />
         <Route path="/product/:id" element={<ProductDetail addToCart={addToCart} />} />
-        <Route path="/cart" element={<Cart cart={cart} removeFromCart={removeFromCart} />} />
+        <Route path="/cart" element={<Cart cart={cart} removeFromCart={removeFromCart} increaseQuantity={increaseQuantity} decreaseQuantity={decreaseQuantity}/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
