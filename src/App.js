@@ -13,6 +13,7 @@ import Delivery from './pages/Delivery';
 import Warranty from './pages/Warranty';
 import ThankYou from './pages/ThankYou';
 import PrivacyPolicy from './pages/PaymentTerms';
+import Cookies from './components/Cookies';
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -74,6 +75,7 @@ const decreaseQuantity = useCallback((productId) => {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/thank-you" element={<ThankYou clearCart={clearCart} />} />
       </Routes>
+      <Cookies />
     </BrowserRouter>
   );
 }
