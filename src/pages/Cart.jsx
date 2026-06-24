@@ -22,12 +22,34 @@ const Cart = ({
   }, 0);
 
   // ИСПРАВЛЕНО: Функция теперь отправляет данные на сервер
-  const order = async () => {
+const order = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
       setShowAlert(true);
       return;
     }
+
+    try {
+      const response = await fetch(`${API_URL}/orders/create/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${token}`,
+        },
+        body: JSON.stringify({ cart: cart }),
+      });
+
+      if (response.ok) {
+        navigate('/thank-you');
+      } else {
+        const errorData = await response.json();
+        alert(errorData.detail || 'Не удалось оформить заказ');
+      }
+    } catch (error) {
+      console.error('Ошибка при отправке заказа:', error);
+      alert('Ошибка соединения с сервером');
+    }
+  };
 
     // Формируем структуру данных, которую ожидает наш бэкенд
     const orderData = {
